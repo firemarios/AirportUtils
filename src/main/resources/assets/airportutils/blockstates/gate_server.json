@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "airportutils:block/gate_server" }
+    "facing=north": { "model": "airportutils:block/gate_server" },
+    "facing=south": { "model": "airportutils:block/gate_server", "y": 180 },
+    "facing=west": { "model": "airportutils:block/gate_server", "y": 270 },
+    "facing=east": { "model": "airportutils:block/gate_server", "y": 90 }
   }
 }

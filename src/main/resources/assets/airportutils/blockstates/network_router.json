@@ -1,5 +1,8 @@
 {
   "variants": {
-    "": { "model": "airportutils:block/network_router" }
+    "facing=north": { "model": "airportutils:block/network_router", "y": 180 },
+    "facing=south": { "model": "airportutils:block/network_router" },
+    "facing=west": { "model": "airportutils:block/network_router", "y": 90 },
+    "facing=east": { "model": "airportutils:block/network_router", "y": 270 }
   }
 }

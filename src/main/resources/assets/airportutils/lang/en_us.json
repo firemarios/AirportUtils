@@ -1,0 +1,8 @@
+{
+  "itemGroup.airportutils.airport_utils_tab": "Airport Utils",
+  "block.airportutils.main_server": "Main Server",
+  "block.airportutils.flight_server": "Flight Server",
+  "block.airportutils.gate_server": "Gate Server",
+  "block.airportutils.runway_server": "Runway Server",
+  "block.airportutils.network_router": "Network Router"
+}

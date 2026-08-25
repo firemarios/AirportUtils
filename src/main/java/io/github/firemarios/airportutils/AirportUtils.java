@@ -1,7 +1,11 @@
 package io.github.firemarios.airportutils;
 
 import com.mojang.logging.LogUtils;
-import io.github.firemarios.airportutils.block.ServerBlock;
+import io.github.firemarios.airportutils.block.MainServerBlock;
+import io.github.firemarios.airportutils.block.FlightServerBlock;
+import io.github.firemarios.airportutils.block.GateServerBlock;
+import io.github.firemarios.airportutils.block.RunwayServerBlock;
+import io.github.firemarios.airportutils.block.NetworkRouterBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -10,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,11 +44,11 @@ public class AirportUtils
                     .build());
 
     // Server Room Blocks
-    public static final RegistryObject<Block> MAIN_SERVER = BLOCKS.register("main_server", ServerBlock::new);
-    public static final RegistryObject<Block> FLIGHT_SERVER = BLOCKS.register("flight_server", ServerBlock::new);
-    public static final RegistryObject<Block> GATE_SERVER = BLOCKS.register("gate_server", ServerBlock::new);
-    public static final RegistryObject<Block> RUNWAY_SERVER = BLOCKS.register("runway_server", ServerBlock::new);
-    public static final RegistryObject<Block> NETWORK_ROUTER = BLOCKS.register("network_router", ServerBlock::new);
+    public static final RegistryObject<Block> MAIN_SERVER = BLOCKS.register("main_server", MainServerBlock::new);
+    public static final RegistryObject<Block> FLIGHT_SERVER = BLOCKS.register("flight_server", FlightServerBlock::new);
+    public static final RegistryObject<Block> GATE_SERVER = BLOCKS.register("gate_server", GateServerBlock::new);
+    public static final RegistryObject<Block> RUNWAY_SERVER = BLOCKS.register("runway_server", RunwayServerBlock::new);
+    public static final RegistryObject<Block> NETWORK_ROUTER = BLOCKS.register("network_router", NetworkRouterBlock::new);
 
     // Server Room Block Items
     public static final RegistryObject<Item> MAIN_SERVER_ITEM = ITEMS.register("main_server", () -> new BlockItem(MAIN_SERVER.get(), new Item.Properties()));
@@ -62,6 +67,8 @@ public class AirportUtils
 
         MinecraftForge.EVENT_BUS.register(this);
 
+        modEventBus.addListener(this::addCreative);
+
         context.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         LOGGER.info("Airport Utils loaded");
@@ -71,6 +78,18 @@ public class AirportUtils
     public void onServerStarting(ServerStartingEvent event)
     {
         LOGGER.info("Airport Utils: Server starting");
+    }
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event)
+    {
+        if (event.getTab() == AIRPORT_UTILS_TAB.get())
+        {
+            event.accept(MAIN_SERVER_ITEM);
+            event.accept(FLIGHT_SERVER_ITEM);
+            event.accept(GATE_SERVER_ITEM);
+            event.accept(RUNWAY_SERVER_ITEM);
+            event.accept(NETWORK_ROUTER_ITEM);
+        }
     }
 
     @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
